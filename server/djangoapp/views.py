@@ -1,10 +1,7 @@
 
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import get_request, analyze_review_sentiments
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import logout
-from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
 import logging
