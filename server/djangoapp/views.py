@@ -1,5 +1,5 @@
 
-from .restapis import get_request, analyze_review_sentiments
+from .restapis import get_request, analyze_review_sentiments, post_review
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -78,6 +78,8 @@ def registration(request):
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
 
+# ...
+
 
 @csrf_exempt
 def get_cars(request):
@@ -135,5 +137,16 @@ def get_dealer_details(request, dealer_id):
 # ...
 
 # Create a `add_review` view to submit a review
-# def add_review(request):
-# ...
+
+
+@csrf_exempt
+def add_review(request):
+    if request.user.is_anonymous:
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
+    try:
+        data = json.loads(request.body)
+        post_review(data)
+        return JsonResponse({"status": 200})
+    except Exception:
+        return JsonResponse(
+            {"status": 401, "message": "Error in posting review"})
